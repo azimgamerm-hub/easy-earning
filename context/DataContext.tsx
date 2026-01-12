@@ -64,7 +64,14 @@ const initialJobSubmissions: JobSubmission[] = [
 const getFromStorage = (key: string, fallback: any) => {
     try {
         const item = localStorage.getItem(key);
-        return item ? JSON.parse(item) : fallback;
+        if (item) {
+            const parsed = JSON.parse(item);
+            // Prevent returning null if the stored value is "null"
+            if (parsed !== null) {
+                return parsed;
+            }
+        }
+        return fallback;
     } catch (e) {
         console.error(`Error reading ${key} from storage`, e);
         return fallback;
